@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Address, decodeEventLog, formatEther, parseAbiItem } from "viem";
+import { Address, formatEther } from "viem";
 import { useAccount, useChainId, usePublicClient, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { arcadeEscrowAbi, ESCROW_STATE, getArcadeEscrowAddress } from "../lib/contracts/arcadeEscrow";
+import { arcadeEscrowAbi, getArcadeEscrowAddress } from "../lib/contracts/arcadeEscrow";
 import { sudokuArenaAbi, getSudokuArenaAddress } from "../lib/contracts/sudokuArena";
 import { monadTestnet } from "../lib/wagmi";
 
@@ -21,7 +21,6 @@ const MIN_WAGER_WEI = 10n ** 18n;
 export default function PendingChallenges() {
   const { address } = useAccount();
   const chainId = useChainId();
-  const publicClient = usePublicClient();
   const escrowAddress = getArcadeEscrowAddress();
   const arenaAddress = getSudokuArenaAddress();
   const [challenges, setChallenges] = useState<PendingChallenge[]>([]);
@@ -37,7 +36,8 @@ export default function PendingChallenges() {
     hash: txHash || undefined
   });
 
-  const isReady = Boolean(address && publicClient && escrowAddress && mounted);
+  const publicClient = usePublicClient();
+  const isReady = Boolean(address && escrowAddress && mounted);
   const isMonad = chainId === monadTestnet.id;
 
   useEffect(() => {
@@ -53,64 +53,25 @@ export default function PendingChallenges() {
     let cancelled = false;
 
     const load = async () => {
-      if (!publicClient || !escrowAddress || !address) return;
+      if (!escrowAddress || !address) return;
       setStatus("Loading...");
       setError("");
 
       try {
-        const logs = await publicClient.getLogs({
-          address: escrowAddress,
-          event: parseAbiItem(
-            "event ChallengeCreated(uint256 indexed matchId,address indexed creator,address indexed opponent,uint256 wager,uint32 gameId,uint64 acceptBy,uint64 resolveBy,bytes32 metaHash)"
-          ),
-          fromBlock: 0n
-        });
+        const response = await fetch(`/api/challenges?address=${address}`);
+        const json = await response.json();
+        if (!response.ok) {
+          throw new Error(json?.error || "Failed to load challenges");
+        }
 
-        const decoded = logs
-          .map((log) => {
-            const event = decodeEventLog({
-              abi: arcadeEscrowAbi,
-              data: log.data,
-              topics: log.topics
-            });
-            return {
-              matchId: event.args.matchId as bigint,
-              creator: event.args.creator as Address,
-              opponent: event.args.opponent as Address,
-              wager: event.args.wager as bigint,
-              acceptBy: event.args.acceptBy as bigint,
-              resolveBy: event.args.resolveBy as bigint
-            };
-          })
-          .filter((event) => event.opponent.toLowerCase() === address.toLowerCase());
-
-        const withState = await Promise.all(
-          decoded.map(async (event) => {
-            const match = (await publicClient.readContract({
-              address: escrowAddress,
-              abi: arcadeEscrowAbi,
-              functionName: "matches",
-              args: [event.matchId]
-            })) as readonly [
-              Address,
-              Address,
-              bigint,
-              number,
-              bigint,
-              bigint,
-              bigint,
-              number,
-              Address,
-              `0x${string}`
-            ];
-            return { event, state: match[7] };
-          })
-        );
-
-        const pending = withState
-          .filter((item) => item.state === ESCROW_STATE.OPEN && item.event.wager >= MIN_WAGER_WEI)
-          .map((item) => item.event)
-          .sort((a, b) => (a.wager > b.wager ? -1 : 1));
+        const pending = (json?.challenges || []).map((event: any) => ({
+          matchId: BigInt(event.matchId),
+          creator: event.creator as Address,
+          opponent: event.opponent as Address,
+          wager: BigInt(event.wager),
+          acceptBy: BigInt(event.acceptBy),
+          resolveBy: BigInt(event.resolveBy)
+        }));
 
         if (!cancelled) {
           setChallenges(pending);
