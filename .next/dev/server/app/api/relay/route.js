@@ -1,0 +1,12 @@
+var R=require("../../../chunks/[turbopack]_runtime.js")("server/app/api/relay/route.js")
+R.c("server/chunks/d6035_viem_aff4e985._.js")
+R.c("server/chunks/d6035_next_228e4e65._.js")
+R.c("server/chunks/d6035_viem__esm_0f34a9c7._.js")
+R.c("server/chunks/d6035_c3bb1310._.js")
+R.c("server/chunks/d6035_d4ef9a59._.js")
+R.c("server/chunks/d6035_ox__esm_17f2056d._.js")
+R.c("server/chunks/d6035_1fe0a4aa._.js")
+R.c("server/chunks/[root-of-the-server]__ff54dc4e._.js")
+R.c("server/chunks/Vibes_Arcade2__next-internal_server_app_api_relay_route_actions_bf36cd3a.js")
+R.m("[project]/Vibes/Arcade2/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/Vibes/Arcade2/src/app/api/relay/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/Vibes/Arcade2/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/Vibes/Arcade2/src/app/api/relay/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports

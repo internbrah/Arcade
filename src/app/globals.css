@@ -1,0 +1,188 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #0b0b0f;
+  color: #f6f6f6;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: #15151d;
+  border: 1px solid #262635;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.hero-card {
+  padding: 12px 16px;
+}
+
+.hero-card h1 {
+  font-size: 1.5rem;
+  margin: 0 0 4px;
+}
+
+.wallet-card {
+  padding: 10px 14px;
+}
+
+.wallet-card h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.wallet-card p {
+  margin: 6px 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.muted {
+  color: #a3a3b2;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.9rem;
+}
+
+.success {
+  color: #6ee7b7;
+}
+
+.error {
+  color: #f87171;
+}
+
+button {
+  background: #6d28d9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #2a2a3a;
+  color: #e4e4ef;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+input,
+select {
+  background: #0f0f16;
+  border: 1px solid #2a2a3a;
+  color: #f8fafc;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  width: min(480px, 92vw);
+  background: #14141c;
+  border: 1px solid #2a2a3a;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.challenge-item {
+  border-top: 1px solid #2a2a3a;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.sudoku-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 32px);
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.sudoku-cell {
+  width: 32px;
+  height: 32px;
+  background: #0f0f16;
+  border: 1px solid #2a2a3a;
+  border-style: solid;
+  border-radius: 6px;
+  color: #f8fafc;
+  text-align: center;
+  font-size: 16px;
+  transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+.sudoku-cell.pending {
+  opacity: 0.6;
+  border-color: #6d28d9;
+}
+
+.sudoku-cell.fixed {
+  background: #1b1b26;
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+.sudoku-cell.highlight {
+  background: #facc15;
+  color: #ffffff;
+}
+
+.sudoku-cell.rowcol,
+.sudoku-cell.box {
+  background: #2b2b33;
+}
+
+.sudoku-cell.invalid {
+  border-color: #f87171;
+}

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 14, "column": 0}, "map": {"version":3,"sources":["file:///Users/jackmccordic/Desktop/Vibes/Arcade2/src/app/page.tsx"],"sourcesContent":["export default function HomePage() {\n  return (\n    <main className=\"container\">\n      <h1>Arcade2</h1>\n      <p>Scaffold ready for MVP build.</p>\n    </main>\n  );\n}\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACtB,qBACE,kQAAC;QAAK,WAAU;;0BACd,kQAAC;0BAAG;;;;;;0BACJ,kQAAC;0BAAE;;;;;;;;;;;;AAGT"}}]
+}
