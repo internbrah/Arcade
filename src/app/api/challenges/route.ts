@@ -14,13 +14,18 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Invalid address" }, { status: 400 });
   }
 
-  if (!process.env.NEXT_PUBLIC_ARCADE_ESCROW_ADDRESS || !process.env.MONAD_RPC_URL) {
+  const rpcUrl =
+    process.env.MONAD_RPC_URL ||
+    process.env.NEXT_PUBLIC_MONAD_RPC_URL ||
+    "https://testnet-rpc.monad.xyz";
+
+  if (!process.env.NEXT_PUBLIC_ARCADE_ESCROW_ADDRESS) {
     return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
   }
 
   const client = createPublicClient({
     chain: monadTestnet,
-    transport: http(process.env.MONAD_RPC_URL)
+    transport: http(rpcUrl)
   });
 
   try {
@@ -89,7 +94,10 @@ export async function GET(req: Request) {
     return NextResponse.json({ challenges: pending });
   } catch (err: any) {
     return NextResponse.json(
-      { error: err?.shortMessage || err?.message || "Failed to load challenges" },
+      {
+        error: err?.shortMessage || err?.message || "Failed to load challenges",
+        hint: "Check MONAD_RPC_URL or NEXT_PUBLIC_MONAD_RPC_URL in Vercel env"
+      },
       { status: 500 }
     );
   }
