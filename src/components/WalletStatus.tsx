@@ -86,8 +86,8 @@ export default function WalletStatus() {
                   ? "Loading..."
                   : directBalance
                     ? `${Number(directBalance).toFixed(4)} MON`
-                    : balance?.formatted
-                      ? `${Number(balance.formatted).toFixed(4)} ${balance.symbol || "MON"}`
+                    : balance?.value !== undefined
+                      ? `${Number(formatEther(balance.value)).toFixed(4)} ${balance.symbol || "MON"}`
                       : "0.0000 MON"}
             </span>
           </p>

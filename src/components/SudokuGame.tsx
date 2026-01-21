@@ -343,7 +343,7 @@ export default function SudokuGame() {
           address: arenaAddress!,
           chainId: monadTestnet.id,
           functionName: "submitMove",
-          args: [BigInt(matchId), row, col, digit]
+          args: [BigInt(matchId as number), row, col, digit]
         });
         setTxHash(hash);
         setStatus("Move submitted. Waiting for confirmation...");
