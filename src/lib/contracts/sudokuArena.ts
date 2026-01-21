@@ -48,6 +48,13 @@ export const sudokuArenaAbi = [
   },
   {
     inputs: [{ internalType: "uint256", name: "matchId", type: "uint256" }],
+    name: "acceptMatch",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "matchId", type: "uint256" }],
     name: "matches",
     outputs: [
       { internalType: "address", name: "creator", type: "address" },
