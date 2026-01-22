@@ -270,8 +270,8 @@
       ]
     },
     "/Users/jackmccordic/Desktop/Vibes/Arcade2/contracts/SudokuArena.sol": {
-      "lastModificationDate": 1769021622971,
-      "contentHash": "7fbb58c3404d6f9512e3c6a56441e3ea",
+      "lastModificationDate": 1769113280651,
+      "contentHash": "6735a66fd1e939a37b2d148cf8bcfb05",
       "sourceName": "contracts/SudokuArena.sol",
       "solcConfig": {
         "version": "0.8.20",

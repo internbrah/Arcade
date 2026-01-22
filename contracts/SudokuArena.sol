@@ -180,13 +180,13 @@ contract SudokuArena {
         require(given == 0, "SudokuArena: fixed cell");
 
         if (value > 0) {
-            _validateMove(matchId, player, row, col, value);
+            _validateMove(matchId, m.puzzleIndex, player, row, col, value);
         }
 
         grids[matchId][player][_cellIndex(row, col)] = value;
         emit MoveSubmitted(matchId, player, row, col, value);
 
-        if (value > 0 && _isComplete(matchId, player)) {
+        if (value > 0 && _isComplete(matchId, m.puzzleIndex, player)) {
             _setFinishBlock(m, player);
             _maybeFinalize(matchId, m);
         }
@@ -277,40 +277,59 @@ contract SudokuArena {
 
     function _validateMove(
         uint256 matchId,
+        uint8 puzzleIndex,
         address player,
         uint8 row,
         uint8 col,
         uint8 value
     ) internal view {
+        // Check row - both givens and player moves
         for (uint8 c = 0; c < 9; c += 1) {
             if (c == col) continue;
-            if (grids[matchId][player][_cellIndex(row, c)] == value) {
+            uint8 given = _getPackedCell(puzzles[puzzleIndex], row, c);
+            uint8 played = grids[matchId][player][_cellIndex(row, c)];
+            uint8 cellValue = given > 0 ? given : played;
+            if (cellValue == value) {
                 revert("SudokuArena: row conflict");
             }
         }
 
+        // Check column - both givens and player moves
         for (uint8 r = 0; r < 9; r += 1) {
             if (r == row) continue;
-            if (grids[matchId][player][_cellIndex(r, col)] == value) {
+            uint8 given = _getPackedCell(puzzles[puzzleIndex], r, col);
+            uint8 played = grids[matchId][player][_cellIndex(r, col)];
+            uint8 cellValue = given > 0 ? given : played;
+            if (cellValue == value) {
                 revert("SudokuArena: column conflict");
             }
         }
 
+        // Check box - both givens and player moves
         uint8 boxRow = (row / 3) * 3;
         uint8 boxCol = (col / 3) * 3;
         for (uint8 r = boxRow; r < boxRow + 3; r += 1) {
             for (uint8 c = boxCol; c < boxCol + 3; c += 1) {
                 if (r == row && c == col) continue;
-                if (grids[matchId][player][_cellIndex(r, c)] == value) {
+                uint8 given = _getPackedCell(puzzles[puzzleIndex], r, c);
+                uint8 played = grids[matchId][player][_cellIndex(r, c)];
+                uint8 cellValue = given > 0 ? given : played;
+                if (cellValue == value) {
                     revert("SudokuArena: box conflict");
                 }
             }
         }
     }
 
-    function _isComplete(uint256 matchId, address player) internal view returns (bool) {
+    // FIXED: Now checks both givens AND player moves
+    function _isComplete(uint256 matchId, uint8 puzzleIndex, address player) internal view returns (bool) {
         for (uint8 i = 0; i < 81; i += 1) {
-            if (grids[matchId][player][i] == 0) {
+            uint8 row = i / 9;
+            uint8 col = i % 9;
+            uint8 given = _getPackedCell(puzzles[puzzleIndex], row, col);
+            uint8 played = grids[matchId][player][i];
+            // Cell is filled if it's either a given OR the player filled it
+            if (given == 0 && played == 0) {
                 return false;
             }
         }

@@ -1,0 +1,13 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_not-found/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__d782071c._.js")
+R.c("server/chunks/ssr/d6035_next_dist_8dc7bc66._.js")
+R.c("server/chunks/ssr/d6035_next_dist_esm_build_templates_app-page_d392e7b1.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0aedfa5f._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__40a9d921._.js")
+R.c("server/chunks/ssr/d6035_next_dist_ea91e5b0._.js")
+R.c("server/chunks/ssr/Vibes_Arcade2_src_372b1f24._.js")
+R.c("server/chunks/ssr/d6035_next_dist_client_components_4c177706._.js")
+R.c("server/chunks/ssr/d6035_next_dist_client_components_builtin_forbidden_4cfb9b4b.js")
+R.c("server/chunks/ssr/Vibes_Arcade2__next-internal_server_app__not-found_page_actions_c4bd041c.js")
+R.m(35001)
+module.exports=R.m(35001).exports
