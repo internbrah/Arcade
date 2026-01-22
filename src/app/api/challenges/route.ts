@@ -4,6 +4,8 @@ import { createPublicClient, http } from "viem";
 import { arcadeEscrowAbi, ESCROW_STATE } from "@/lib/contracts/arcadeEscrow";
 import { monadTestnet } from "@/lib/wagmi";
 
+export const runtime = "nodejs";
+
 const MIN_WAGER_WEI = 10n ** 18n;
 
 export async function GET(req: Request) {
@@ -96,7 +98,10 @@ export async function GET(req: Request) {
     return NextResponse.json(
       {
         error: err?.shortMessage || err?.message || "Failed to load challenges",
-        hint: "Check MONAD_RPC_URL or NEXT_PUBLIC_MONAD_RPC_URL in Vercel env"
+        hint: "Check MONAD_RPC_URL or NEXT_PUBLIC_MONAD_RPC_URL in Vercel env",
+        rpcUrl,
+        hasMonadRpcEnv: Boolean(process.env.MONAD_RPC_URL),
+        hasPublicMonadRpcEnv: Boolean(process.env.NEXT_PUBLIC_MONAD_RPC_URL)
       },
       { status: 500 }
     );
